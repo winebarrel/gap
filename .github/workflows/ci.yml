@@ -21,3 +21,7 @@ jobs:
           cache: false
       - uses: golangci/golangci-lint-action@v8
       - run: make
+      - uses: ./.github/actions/docker-build
+        with:
+          push: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}

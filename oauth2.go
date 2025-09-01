@@ -2,38 +2,10 @@ package gap
 
 import (
 	"context"
-	"errors"
-	"strings"
 
 	"google.golang.org/api/oauth2/v2"
 	"google.golang.org/api/option"
 )
-
-func getEmailFromToken(token string, domain string) (string, error) {
-	oauth2Service, err := oauth2.NewService(context.Background(), option.WithoutAuthentication())
-
-	if err != nil {
-		return "", err
-	}
-
-	tokenInfo, err := oauth2Service.Tokeninfo().AccessToken(token).Do()
-
-	if err != nil {
-		return "", err
-	}
-
-	email := tokenInfo.Email
-
-	if email == "" {
-		return "", errors.New("Unable to get email from token")
-	}
-
-	if !strings.HasSuffix(email, "@"+domain) {
-		return "", errors.New("Disallowed domain")
-	}
-
-	return email, nil
-}
 
 type Oauth2Client struct {
 	Service *oauth2.Service

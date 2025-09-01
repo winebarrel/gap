@@ -6,7 +6,7 @@ RUN go mod download
 
 COPY *.go /src/
 COPY cmd/gap/*.go /src/cmd/gap/
-ARG gap_VERSION
+ARG GAP_VERSION
 RUN CGO_ENABLED=0 go build -o gap -ldflags "-X main.version=${GAP_VERSION}" ./cmd/gap
 
 FROM gcr.io/distroless/static

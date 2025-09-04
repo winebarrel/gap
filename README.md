@@ -19,7 +19,7 @@ Flags:
 ```
 
 ```sh
-$ go run ./cmd/gap -b https://example.comp -d winebarrel.jp -p 8080
+$ go run ./cmd/gap -b https://example.com -d winebarrel.jp -p 8080
 ```
 
 ```sh

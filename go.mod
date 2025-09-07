@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/kong v1.12.1
 	github.com/jarcoal/httpmock v1.4.1
 	github.com/stretchr/testify v1.11.1
+	github.com/winebarrel/sglob v0.1.0
 	google.golang.org/api v0.248.0
 )
 

@@ -5,13 +5,9 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
-	"strings"
 
+	"github.com/winebarrel/sglob"
 	oauth2opt "google.golang.org/api/option"
-)
-
-const (
-	TokenHeaderName = "x-gap-token"
 )
 
 func HandlePing(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +42,7 @@ func NewAuthHandler(options *Options, oauth2opts ...oauth2opt.ClientOption) (*Au
 }
 
 func (h *AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	token := r.Header.Get(TokenHeaderName)
+	token := r.Header.Get(h.Options.HeaderName)
 
 	if token == "" {
 		http.Error(w, "forbidden", http.StatusForbidden)
@@ -56,20 +52,23 @@ func (h *AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ti, err := h.Oauth2.Tokeninfo(token)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		log.Printf("[ERROR] %s", err)
+		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
 
 	if ti.Email == "" {
-		http.Error(w, "email is empty", http.StatusForbidden)
+		http.Error(w, "cannot get email", http.StatusForbidden)
 		return
 	}
 
-	if !strings.HasSuffix(ti.Email, "@"+h.Options.Domain) {
-		http.Error(w, "disallowed domain", http.StatusForbidden)
-		return
+	for _, allowed := range h.Options.AllowList {
+		if sglob.Match(allowed, ti.Email) {
+			log.Printf("%s -> %s", ti.Email, r.URL.Path)
+			h.Proxy(w, r)
+			return
+		}
 	}
 
-	log.Printf("%s -> %s", ti.Email, r.URL.Path)
-	h.Proxy(w, r)
+	http.Error(w, "not allowed", http.StatusForbidden)
 }

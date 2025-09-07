@@ -22,7 +22,10 @@ Flags:
 ```
 
 ```sh
-$ go run ./cmd/gap -b https://example.com -e '*@example.com' -p 8080
+$ go run ./cmd/gap -b https://example.com -e '*@example.com' -p 8080 -n x-my-gap-token
+
+# When using Docker:
+# docker run --rm -p 8080:8080 ghcr.io/winebarrel/gap -b https://example.com -e '*@example.com' -p 8080 -n x-my-gap-token
 ```
 
 ```sh
@@ -30,10 +33,10 @@ $ go run ./cmd/gap -b https://example.com -e '*@example.com' -p 8080
 # e.g. https://developers.google.com/apps-script/reference/script/script-app#getOAuthToken()
 $ export TOKEN='xxx'
 
-$ curl  -H "x-gap-token: ${NOT_CORRECT_TOKEN}" localhost:8080
+$ curl  -H "x-my-gap-token: ${NOT_CORRECT_TOKEN}" localhost:8080
 forbidden
 
-~% curl -H "x-gap-token: ${TOKEN}" localhost:8080
+~% curl -H "x-my-gap-token: ${TOKEN}" localhost:8080
 <!doctype html>
 <html>
 <head>

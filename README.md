@@ -7,24 +7,27 @@ Simple HTTP proxy with Google Oauth2 access token verification.
 ## Usage
 
 ```
-gap --help
-Usage: gap --backend=BACKEND --port=UINT --domain=STRING [flags]
+Usage: gap --backend=BACKEND --port=UINT --header-name=STRING --allow-list=ALLOW-LIST,... [flags]
 
 Flags:
-  -h, --help               Show help.
-  -b, --backend=BACKEND    Backend URL to proxy ($GAP_BACKEND).
-  -p, --port=UINT          Listening port ($GAP_PORT).
-  -d, --domain=STRING      Allowed email domain ($GAP_DOMAIN).
+  -h, --help                  Show help.
+  -b, --backend=BACKEND       Backend URL ($GAP_BACKEND).
+  -p, --port=UINT             Listening port ($GAP_PORT).
+  -n, --header-name=STRING    Header name to pass the access token
+                              ($GAP_HEADER).
+  -e, --allow-list=ALLOW-LIST,...
+                              Allowed email list that may contain wildcards
+                              ($GAP_ALLOW_LIST).
       --version
 ```
 
 ```sh
-$ go run ./cmd/gap -b https://example.com -d winebarrel.jp -p 8080
+$ go run ./cmd/gap -b https://example.com -e '*@example.com' -p 8080
 ```
 
 ```sh
-# Get Oauth2 token and set it in an environment variable.
-# e.g. https://developers.google.com/apps-script/reference/script/script-app?hl=ja#getOAuthToken()
+# Get Oauth2 token from Apps Script and set it in an environment variable.
+# e.g. https://developers.google.com/apps-script/reference/script/script-app#getOAuthToken()
 $ export TOKEN='xxx'
 
 $ curl  -H "x-gap-token: ${NOT_CORRECT_TOKEN}" localhost:8080

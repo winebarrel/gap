@@ -3,7 +3,7 @@ module github.com/winebarrel/gap
 go 1.24.3
 
 require (
-	github.com/alecthomas/kong v1.12.1
+	github.com/alecthomas/kong v1.13.0
 	github.com/jarcoal/httpmock v1.4.1
 	github.com/stretchr/testify v1.11.1
 	github.com/winebarrel/sglob v0.1.0

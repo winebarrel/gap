@@ -7,7 +7,7 @@ require (
 	github.com/jarcoal/httpmock v1.4.2
 	github.com/stretchr/testify v1.12.1
 	github.com/winebarrel/sglob v0.1.0
-	google.golang.org/api v0.297.0
+	google.golang.org/api v0.298.0
 )
 
 require (
